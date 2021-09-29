@@ -17,9 +17,10 @@ npm install -D jenkins-runner
 npx jenkins-runner init
 ```
 
-2. 配置生成的config文件`jenkins_runner.config.js` 和 `local.private.config.js`
-3. 配置package.json中的scripts配置节 `"deploy:pn":"jenkins-runner -r deployPN"`
-4. 执行runner `npm run deployPN`
+2. 配置生成的config文件`jenkins_runner.config.js`
+3. 配置生成的配置文件 `local.private.config.js`
+4. 配置package.json中的scripts配置节 `"deploy:pn":"jenkins-runner -r deployPN"`
+5. 执行runner `npm run deploy:pn`
 
 ``` bash
 

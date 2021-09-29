@@ -1,7 +1,6 @@
+// 部分jenkins 配置（个人用户信息）
 module.exports.jenkinsConfig = {
   user: "YouUserName",
   apiToken: "<ApiToken>",
   password: "<YourPASSWORD>",
-  host: "xx.xx.xx.xx:port", // 域名或IP
-  schema: "http", // jenkins service schema
 };
