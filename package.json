@@ -24,13 +24,11 @@
     "chalk": "^4.1.2",
     "commander": "^8.2.0",
     "crypto-js": "^4.1.1",
-    "debug": "^4.3.2",
     "jenkins": "^0.28.1"
   },
   "devDependencies": {
     "@types/commander": "^2.12.2",
     "@types/crypto-js": "^4.0.2",
-    "@types/debug": "^4.1.7",
     "@types/jenkins": "^0.23.2",
     "cross-env": "^7.0.3"
   }
