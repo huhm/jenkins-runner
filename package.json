@@ -1,6 +1,6 @@
 {
   "name": "jenkins-runner",
-  "version": "1.0.2",
+  "version": "1.0.6",
   "description": "a simple jenkins runner cli and apis",
   "main": "lib/index.js",
   "bin": {
@@ -9,6 +9,7 @@
   "homepage": "https://github.com/huhm/jenkins-runner",
   "scripts": {
     "build": "tsc",
+    "release": "tsc && npm publish",
     "dev:example": "node example/jenkins_job_caller.js",
     "dev:help": "tsc && node ./bin/jenkins-runner -h",
     "dev:init": "tsc && node ./bin/jenkins-runner init -d local",

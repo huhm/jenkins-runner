@@ -1,4 +1,4 @@
-const jenkinsConfig = require("./template-private.js");
+const { jenkinsConfig } = require("./local.private.config.js");
 module.exports = {
   jenkinsConfig: jenkinsConfig,
   dingtalkList: [

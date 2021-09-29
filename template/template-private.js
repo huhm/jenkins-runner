@@ -1,4 +1,4 @@
-export const jenkinsConfig = {
+module.exports.jenkinsConfig = {
   user: "YouUserName",
   apiToken: "<ApiToken>",
   password: "<YourPASSWORD>",
