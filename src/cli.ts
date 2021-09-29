@@ -20,7 +20,7 @@ commander.program
   .usage('[options]')
   .description('run jenkins job')
   .requiredOption('-c --config <configPath>', 'config js path,you can use init to creat default config', DEFAULT_JENKINS_CONFIG_FILENAME)
-  .option('-r --runnerName', 'the runner name if not given will use the first runner in config')
+  .option('-r --runnerName <runnerName>', 'the runner name if not given will use the first runner in config')
   .action((options) => {
     const { config, runnerName } = options;
     const configPath = path.join(process.cwd(), config)
@@ -43,52 +43,75 @@ commander.program
 commander.program.command('init')
   .usage('init [options]')
   .description("init the jenkins runner configs")
-  .action(() => {
-    const destFilePath = path.join(process.cwd(), DEFAULT_JENKINS_CONFIG_FILENAME);
-    if (fs.existsSync(destFilePath)) {
-      console.error(chalk.red("[init] fail"), `File has existed: ${destFilePath}`)
+  .option('-d --dir <dirName>', 'the config directory path, defalut is ./')
+  .action((options) => {
+    const { dir = './' } = options
+    const configsPath = path.join(process.cwd(), dir)
+    const destFilePath = path.join(configsPath, DEFAULT_JENKINS_CONFIG_FILENAME);
+    if (!fs.existsSync(configsPath)) {
+      fs.mkdirSync(configsPath, { recursive: true })
+    }
+    if (tryAddConfigFile(destFilePath)) {
+      console.log(chalk.green('[init] ok'), `config file has been created: ${destFilePath}`)
+      const privateConfigDestPath = path.join(configsPath, PRIVATE_CONFIG_FILENAME)
+      tryAddPrivateConfigFile(privateConfigDestPath);
+      tryAddConfigFilesToIgnorePath(PRIVATE_CONFIG_FILENAME)
     } else {
-      const srcFilePath = path.join(__dirname, `../template/${DEFAULT_JENKINS_CONFIG_FILENAME}`)
-      {
-        const str = fs.readFileSync(srcFilePath, {
-          encoding: 'utf-8'
-        })
-        fs.writeFileSync(destFilePath, str, {
-          encoding: 'utf-8'
-        })
-        console.log(chalk.green('[init] ok'), `config file has been created: ${destFilePath}`)
+      console.error(chalk.red("[init] fail"), `File has existed: ${destFilePath}`)
+    }
+
+    function tryAddConfigFile(destFilePath: string) {
+      if (fs.existsSync(destFilePath)) {
+        return false;
       }
-      const destFilePath2 = path.join(process.cwd(), PRIVATE_CONFIG_FILENAME);
+      const srcFilePath = path.join(__dirname, `../template/template-config.js`)
+      const str = fs.readFileSync(srcFilePath, {
+        encoding: 'utf-8'
+      })
+      fs.writeFileSync(destFilePath, str, {
+        encoding: 'utf-8'
+      })
+      return true;
+    }
+
+    function tryAddPrivateConfigFile(destFilePath2: string) {
       if (!fs.existsSync(destFilePath2)) {
-        const srcFilePath2 = path.join(__dirname, `../template/${PRIVATE_CONFIG_FILENAME}`)
-        const str2 = fs.readFileSync(srcFilePath2, {
+        const templatePath = path.join(__dirname, `../template/template-private.js`)
+        const str2 = fs.readFileSync(templatePath, {
           encoding: 'utf-8'
         })
         fs.writeFileSync(destFilePath2, str2, {
           encoding: 'utf-8'
         })
         console.log(chalk.green('[init] ok'), `${PRIVATE_CONFIG_FILENAME} has been created: ${destFilePath2}`)
+      } else {
+        console.log(chalk.blue('ignore'), `file has exist: ${destFilePath}`)
       }
+    }
 
+
+
+    function tryAddConfigFilesToIgnorePath(ignoreItem: string) {
       const gitIgnorePath = path.join(process.cwd(), '.gitignore');
       console.log(chalk.blue('Check gitignore'), `checking gitignore file`)
       if (fs.existsSync(gitIgnorePath)) {
         const gitIgnoreContent = fs.readFileSync(gitIgnorePath);
         let toContent: string;
-        if (gitIgnoreContent.indexOf(PRIVATE_CONFIG_FILENAME) === -1) {
+        if (gitIgnoreContent.indexOf(ignoreItem) === -1) {
           console.log(chalk.green('Start edit .gitignore'))
           // 已经存在
-          toContent = gitIgnoreContent + '\r\n' + PRIVATE_CONFIG_FILENAME;
+          toContent = gitIgnoreContent + '\r\n' + ignoreItem;
           fs.writeFileSync(gitIgnorePath, toContent)
-          console.log(chalk.green('Edited gitignore'), ` add ${PRIVATE_CONFIG_FILENAME}`)
+          console.log(chalk.green('Edited gitignore'), ` add ${ignoreItem}`)
         } else {
-          console.log(`ignore edit gitignore, has add ${PRIVATE_CONFIG_FILENAME}`)
+          console.log(`ignore edit gitignore, has add ${ignoreItem}`)
         }
 
       } else {
-        console.log(chalk.yellow('Notice'), `You'd better add the file 'local.private.config.js' to .gitignore file`)
+        console.log(chalk.yellow('Notice'), `You'd better add the file '${ignoreItem}' to .gitignore file`)
       }
     }
+
   })
 
 commander.program

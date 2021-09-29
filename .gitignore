@@ -2,6 +2,6 @@
 node_modules
 local
 lib
-jenkins_runner.config.js
-local.private.config.js
 package-lock.json
+local.private.config.js
+jenkins_runner.config.js

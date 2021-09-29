@@ -1,6 +1,9 @@
 src/
 tsconfig.json
 example/
+local/
 node_modules/
 jenkins_runner.config.js
 local.private.config.js
+
+package-lock.json
