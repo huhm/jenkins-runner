@@ -41,7 +41,7 @@ export interface IRunnerSchema extends IJenkinsRunnerCheckOption {
   /**
    * 显示名称-若未设置，使用runnerName
    */
-  projectName: string,
+  runnerDisplayName?: string,
 
   /**
    * 待执行job列表(串行熔断)

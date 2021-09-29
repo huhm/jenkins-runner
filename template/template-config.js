@@ -12,7 +12,7 @@ module.exports = {
   // 默认执行列表中第一个，可指定runnerName
   runnerSchemas: [
     {
-      projectName: "<ProjectName>-PN",
+      runnerDisplayName: "<ProjectName>-PN",
       runnerName: "deployPN",
       jobList: [
         {

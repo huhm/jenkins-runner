@@ -33,7 +33,7 @@ commander.program
     const client = new JenkinsClient(json.jenkinsConfig);
     const runnerSchema = client.getRunnerSchemaItem(json, runnerName);
     if (runnerSchema) {
-      console.log(chalk.blue('use runner:'), runnerSchema.runnerName, runnerSchema.projectName);
+      console.log(chalk.blue('use runner:'), runnerSchema.runnerName, runnerSchema.runnerDisplayName);
       client.runSchema(runnerSchema, json.dingtalkList)
     }
   })

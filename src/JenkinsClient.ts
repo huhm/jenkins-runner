@@ -113,7 +113,7 @@ export default class JenkinsClient {
     let jobItem: IRunnerJobItem;
     let isFail = false;
     const md = new DingtalkMarkdown();
-    const title = runnerSchema.projectName || runnerSchema.runnerName;
+    const title = runnerSchema.runnerDisplayName || runnerSchema.runnerName;
     const startDt = new Date().getTime();
     let okCount = 0;
     while (jobItem = runnerSchema.jobList[jobItemIdx]) {
