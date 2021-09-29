@@ -1,11 +1,6 @@
+const jenkinsConfig = require("./local.private.config.js");
 module.exports = {
-  jenkinsConfig: {
-    user: "YouUserName",
-    apiToken: "<ApiToken>",
-    password: "<YourPASSWORD>",
-    host: "xx.xx.xx.xx:port", // 域名或IP
-    schema: "http", // jenkins service schema
-  },
+  jenkinsConfig: jenkinsConfig,
   dingtalkList: [
     {
       accessToken:

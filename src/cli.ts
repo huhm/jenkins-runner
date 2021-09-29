@@ -12,13 +12,14 @@ commander.program.storeOptionsAsProperties(false);
 // (commander.program as any).passCommandToAction(true)
 commander.program.version(pkg.version, '-v, --version')
 
-const DEFAULT_JENKINS_CONFIG = `jenkens_runner.config.js`
+const DEFAULT_JENKINS_CONFIG_FILENAME = `jenkins_runner.config.js`
 
+const PRIVATE_CONFIG_FILENAME = 'local.private.config.js'
 // run job
 commander.program
   .usage('[options]')
   .description('run jenkins job')
-  .requiredOption('-c --config <configPath>', 'config js path,you can use init to creat default config', DEFAULT_JENKINS_CONFIG)
+  .requiredOption('-c --config <configPath>', 'config js path,you can use init to creat default config', DEFAULT_JENKINS_CONFIG_FILENAME)
   .option('-r --runnerName', 'the runner name if not given will use the first runner in config')
   .action((options) => {
     const { config, runnerName } = options;
@@ -41,20 +42,52 @@ commander.program
 // init config file
 commander.program.command('init')
   .usage('init [options]')
-  .description("init the jenkins_runner.config.js")
+  .description("init the jenkins runner configs")
   .action(() => {
-    const destFilePath = path.join(process.cwd(), DEFAULT_JENKINS_CONFIG);
+    const destFilePath = path.join(process.cwd(), DEFAULT_JENKINS_CONFIG_FILENAME);
     if (fs.existsSync(destFilePath)) {
       console.error(chalk.red("[init] fail"), `File has existed: ${destFilePath}`)
     } else {
-      const srcFilePath = path.join(__dirname, '../template/jenkins_runner.config.js')
-      const str = fs.readFileSync(srcFilePath, {
-        encoding: 'utf-8'
-      })
-      fs.writeFileSync(destFilePath, str, {
-        encoding: 'utf-8'
-      })
-      console.log(chalk.green('[init] ok'), `config file has been created: ${destFilePath}`)
+      const srcFilePath = path.join(__dirname, `../template/${DEFAULT_JENKINS_CONFIG_FILENAME}`)
+      {
+        const str = fs.readFileSync(srcFilePath, {
+          encoding: 'utf-8'
+        })
+        fs.writeFileSync(destFilePath, str, {
+          encoding: 'utf-8'
+        })
+        console.log(chalk.green('[init] ok'), `config file has been created: ${destFilePath}`)
+      }
+      const destFilePath2 = path.join(process.cwd(), PRIVATE_CONFIG_FILENAME);
+      if (!fs.existsSync(destFilePath2)) {
+        const srcFilePath2 = path.join(__dirname, `../template/${PRIVATE_CONFIG_FILENAME}`)
+        const str2 = fs.readFileSync(srcFilePath2, {
+          encoding: 'utf-8'
+        })
+        fs.writeFileSync(destFilePath2, str2, {
+          encoding: 'utf-8'
+        })
+        console.log(chalk.green('[init] ok'), `${PRIVATE_CONFIG_FILENAME} has been created: ${destFilePath2}`)
+      }
+
+      const gitIgnorePath = path.join(process.cwd(), '.gitignore');
+      console.log(chalk.blue('Check gitignore'), `checking gitignore file`)
+      if (fs.existsSync(gitIgnorePath)) {
+        const gitIgnoreContent = fs.readFileSync(gitIgnorePath);
+        let toContent: string;
+        if (gitIgnoreContent.indexOf(PRIVATE_CONFIG_FILENAME) === -1) {
+          console.log(chalk.green('Start edit .gitignore'))
+          // 已经存在
+          toContent = gitIgnoreContent + '\r\n' + PRIVATE_CONFIG_FILENAME;
+          fs.writeFileSync(gitIgnorePath, toContent)
+          console.log(chalk.green('Edited gitignore'), ` add ${PRIVATE_CONFIG_FILENAME}`)
+        } else {
+          console.log(`ignore edit gitignore, has add ${PRIVATE_CONFIG_FILENAME}`)
+        }
+
+      } else {
+        console.log(chalk.yellow('Notice'), `You'd better add the file 'local.private.config.js' to .gitignore file`)
+      }
     }
   })
 

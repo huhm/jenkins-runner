@@ -2,3 +2,5 @@ src/
 tsconfig.json
 example/
 node_modules/
+jenkins_runner.config.js
+local.private.config.js

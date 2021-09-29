@@ -1,6 +1,8 @@
-# jenkins-api-client
+# jenkins-runner
 
-jenkins 调用的帮助类, 使用了npm包`jenkins`的api
+[![npm version](https://badge.fury.io/js/jenkins-runner.svg)](https://badge.fury.io/js/jenkins-runner)
+
+jenkins 调用的cli和api, 使用了npm包`jenkins`的api
 
 ## cli
 
@@ -9,10 +11,10 @@ jenkins 调用的帮助类, 使用了npm包`jenkins`的api
 1. 安装和配置
 
 ``` bash
-npm install jenkins-runner -D
+npm install -D jenkins-runner
 
 # 生成config文件
-npm init
+npx jenkins-runner init
 ```
 
 2. 配置生成的config文件`jenkins_runner.config.js`
