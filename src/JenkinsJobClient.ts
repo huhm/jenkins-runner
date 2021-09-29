@@ -49,7 +49,7 @@ export default class JenkinsJobClient {
       this.log([chalk.green(`${stageName}-ok`), "queueNum=", queueNum], [parameters])
       return queueNum as number
     } catch (err) {
-      this.error([chalk.red(`${stageName}-fail`), parameters, err], [])
+      this.error([chalk.red(`${stageName}-fail`), parameters, (err as Error)?.message], [err])
       throw err;
     }
   }

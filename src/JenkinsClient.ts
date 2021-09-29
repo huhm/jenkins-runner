@@ -89,6 +89,15 @@ export default class JenkinsClient {
   }
 
 
+  async info() {
+    try {
+      const info = await this.apiClient.info();
+      this.error([chalk.blue('info'), info])
+      return info;
+    } catch (ex) {
+      this.error([chalk.red('info -error'), (ex as Error)?.message], [ex])
+    }
+  }
 
   getRunnerSchemaItem(jenkinsRunnerConfig: IJenkinsRunnerConfig, runnerName?: string) {
     let runnerSchema = jenkinsRunnerConfig.runnerSchemas[0];

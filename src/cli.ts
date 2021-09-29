@@ -21,23 +21,37 @@ commander.program
   .description('run jenkins job')
   .requiredOption('-c --config <configPath>', 'config js path,you can use init to creat default config', DEFAULT_JENKINS_CONFIG_FILENAME)
   .option('-r --runnerName <runnerName>', 'the runner name if not given will use the first runner in config')
-  .action((options) => {
-    const { config, runnerName } = options;
+  .option('-i, --info', 'get the jenkins info')
+  .action(async (options) => {
+    const { config, runnerName, info } = options;
     const configPath = path.join(process.cwd(), config)
     console.log(chalk.blue("use config:", configPath))
     let jsonRaw = require(configPath) as (IJenkinsRunnerConfig | { default: IJenkinsRunnerConfig });
     let json = jsonRaw as IJenkinsRunnerConfig;
+
+    if (!json) {
+      console.warn(chalk.red("no config finded"));
+      return;
+    }
     if ((jsonRaw as { default: IJenkinsRunnerConfig }).default) {
       json = (jsonRaw as { default: IJenkinsRunnerConfig }).default
     }
+
     const client = new JenkinsClient(json.jenkinsConfig);
+
+    if (info) {
+      client.info()
+      return;
+    }
+
+
+
     const runnerSchema = client.getRunnerSchemaItem(json, runnerName);
     if (runnerSchema) {
       console.log(chalk.blue('use runner:'), runnerSchema.runnerName, runnerSchema.runnerDisplayName);
       client.runSchema(runnerSchema, json.dingtalkList)
     }
   })
-
 
 // init config file
 commander.program.command('init')

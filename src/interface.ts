@@ -2,8 +2,11 @@
 
 export type IJenkinsConConfig = {
   user: string,
-  apiToken: string,
   password: string,
+  /**
+   * 目前apiToken可以不需要
+   */
+  apiToken?: string,
   /**
    * ip:port,
    * domainName:port

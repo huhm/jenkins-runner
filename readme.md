@@ -19,8 +19,19 @@ npx jenkins-runner init
 
 2. 配置生成的config文件`jenkins_runner.config.js`
 3. 配置生成的配置文件 `local.private.config.js`
-4. 配置package.json中的scripts配置节 `"deploy:pn":"jenkins-runner -r deployPN"`
-5. 执行runner `npm run deploy:pn`
+4. 检查jenkins账号配置`npx jenkins-runner --info`
+5. 配置package.json中的scripts配置节 `"deploy:pn":"jenkins-runner -r deployPN"`
+6. 执行runner `npm run deploy:pn`
+
+local.private.config.js
+
+``` js
+export const jenkinsConfig = {
+  user: "<JenkinsUserName>",
+  password: "<JenkinsPassword>",
+};
+
+```
 
 ``` bash
 
