@@ -1,22 +1,22 @@
 import DingtalkMessage from "./DingtalkMessage";
 
 /**
- * DingtalkMarkdown
+ * DingtalkText
  * 需要调用的api:
- * setTitle
- * setContent  （支持markdown语法）
+ * setContent
  */
-export default class DingtalkMarkdown extends DingtalkMessage {
+export default class DingtalkText extends DingtalkMessage {
+  title?: string;
   constructor() {
     super()
-    this.msgtype = 'markdown'
+    this.msgtype = 'text'
   }
 
   get() {
     return this.render({
       [this.msgtype]: {
         title: this.title,
-        text: this.contentLines.join('\n'),
+        content: this.contentLines.join('\n'),
       }
     })
   }

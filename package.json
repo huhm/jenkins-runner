@@ -1,6 +1,6 @@
 {
   "name": "jenkins-runner",
-  "version": "1.0.10",
+  "version": "1.1.0",
   "description": "a simple jenkins runner cli and apis",
   "main": "lib/index.js",
   "bin": {
@@ -11,10 +11,11 @@
     "build": "tsc",
     "release": "tsc && npm publish",
     "dev:example": "tsc && node example/jenkins_job_caller.js",
-    "dev:run": "tsc && node ./bin/jenkins-runner -c ./local/jenkins_runner.config.js -r deployPN",
-    "dev:help": "tsc && node ./bin/jenkins-runner -h",
+    "dev:run": "tsc && node ./bin/jenkins-runner run deployPN --config ./local/jenkins_runner.config.js",
+    "dev:help": "tsc && node ./bin/jenkins-runner run -h",
+    "dev:ding": "tsc && node ./bin/jenkins-runner ding  --config ./local/jenkins_runner.config.js -t \"Test jenkins-runner ding 前端发布\"",
     "dev:init": "tsc && node ./bin/jenkins-runner init --dir local",
-    "dev:info": "tsc && node ./bin/jenkins-runner --info -config ./local/jenkins_runner.config.js"
+    "dev:info": "tsc && node ./bin/jenkins-runner info --config ./local/jenkins_runner.config.js"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"

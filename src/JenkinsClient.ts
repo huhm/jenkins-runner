@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import createJenkinsApi from "jenkins";
 import { JenkinsJobClient } from '.';
 import DingtalkMarkdown from './Dingtalk/DingtalkMarkdown';
-import DingTalkRobot from './Dingtalk/DingtalkRobot';
+import DingTalkRobots from './Dingtalk/DingtalkRobots';
 import { IDingtalkConfigItem, IJenkinsConConfig, IJenkinsRunnerConfig, IRunnerJobItem, IRunnerSchema } from './interface';
 import { formatSimpleDate } from './utils';
 
@@ -92,7 +92,7 @@ export default class JenkinsClient {
   async info() {
     try {
       const info = await this.apiClient.info();
-      this.error([chalk.blue('info'), info])
+      this.log([chalk.blue('info'), info])
       return info;
     } catch (ex) {
       this.error([chalk.red('info -error'), (ex as Error)?.message], [ex])
@@ -173,18 +173,13 @@ export default class JenkinsClient {
       md.append(runnerSchema.reminderSuffix)
     }
     if (doSendReminder && dingtalkList && dingtalkList.length > 0) {
-      const sendTaskList = dingtalkList.map((dt, idx) => {
-        return new DingTalkRobot(dt).send(md).then((res => {
-          if (!res?.data.errcode) {
-            this.log([chalk.green('[Dingtalk] Remind ok'), idx + 1])
-          } else {
-            this.log([chalk.red('[Dingtalk] Remind Error'), idx + 1, res.data])
-          }
-        }))
-      });
-      Promise.all(sendTaskList).then(() => {
-        this.log(['END'])
-      })
+
+      const dingtalkRobots = new DingTalkRobots(dingtalkList);
+      await dingtalkRobots.send(md);
+
     }
+
+
+    return !isFail;
   }
 }

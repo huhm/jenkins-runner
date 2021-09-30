@@ -5,49 +5,61 @@
 jenkins 调用的cli和api, 使用了npm包`jenkins`的api
 
 ## cli
++ `jenkins-runner init [-d <configFolderPath>]` 初始化项目配置
++ `jenkins-runner run <runnerName> [-c <configFile>]` 执行jenkins任务
++ `jenkins-runner info [-c <configFile>]` 尝试连接jenkins,并获取信息
++ `jenkins-runner ding -t <text> [-c <configFile>]` 指定发送消息
 
 ### 首次使用步骤
 
-1. 安装和配置  
-
-``` bash
-npm install -D jenkins-runner
-
-# 生成config文件
-npx jenkins-runner init
-```
-
-2. 配置生成的config文件`jenkins_runner.config.js`
-3. 配置生成的配置文件 `local.private.config.js`
-4. 检查jenkins账号配置`npx jenkins-runner --info`
-5. 配置package.json中的scripts配置节 `"deploy:pn":"jenkins-runner -r deployPN"`
+1. 安装 `npm install -D jenkins-runner`
+2. 配置 `npx jenkins-runner init`
+3. 配置生成的文件
+   1. config文件： `jenkins_runner.config.js`
+   2. 配置生成的私有文件 `local.private.config.js`
+4. 检查jenkins账号配置 `npx jenkins-runner info`
+5. 配置package.json
+   1. scripts配置节 `"deploy:pn":"jenkins-runner run deployPN"`
 6. 执行runner `npm run deploy:pn`
 
-``` bash
-
-# 执行第一个runenrSchema
-npx jenkins-runner
-
-# 执行指定的runenrSchema
-npx jenkins-runner -r runnerName
-
-# 指定配置文件
-npx jenkins-runner -r runnerName -c ./xxx.config.js
-
-# 在package.json 文件的scripts中增加 deploy:""
-```
 
 ### 重新下仓库时的配置
 
 1. 执行`npx jenkins-runner init`
-local.private.config.js
 
+local.private.config.js
 ``` js
 export const jenkinsConfig = {
   user: "<JenkinsUserName>",
   password: "<JenkinsPassword>",
 };
 
+```
+
+### Command使用示例
+
+
+run job
+``` bash
+# get help
+jenkins-runner run -h
+
+
+# 执行第一个runenrSchema
+npx jenkins-runner run
+
+# 执行指定的runenrSchema
+npx jenkins-runner run <runnerName>
+
+# 指定配置文件
+npx jenkins-runner run  <runnerName> -c ./xxx.config.js
+
+```
+
+send text
+``` bash
+
+npx jenkins-runner ding -t "fff"
 ```
 
 ## 钉钉群消息助手

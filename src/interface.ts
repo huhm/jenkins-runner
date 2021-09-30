@@ -63,15 +63,24 @@ export interface IRunnerSchema extends IJenkinsRunnerCheckOption {
   reminderSuffix?: string[]
 }
 
+export interface IDingtalkConfigItemBase {
+  /**
+   * 用来标记消息通知对象
+   */
+  label?: string;
 
-export interface IDingtalkConfigItemAccessToken {
-
-  accessToken: string,
-  secret: string
+  /**
+   * 使用关键词时，不需要，自行保证内容中有关键词
+   */
+  secret?: string
 }
 
-export interface IDingtalkConfigItemWebhook {
-  webhook: string, secret: string
+export interface IDingtalkConfigItemAccessToken extends IDingtalkConfigItemBase {
+  accessToken: string
+}
+
+export interface IDingtalkConfigItemWebhook extends IDingtalkConfigItemBase {
+  webhook: string;
 }
 export type IDingtalkConfigItem = IDingtalkConfigItemAccessToken | IDingtalkConfigItemWebhook
 
@@ -149,7 +158,7 @@ export interface IJenkinsJobResult {
 
 
 export interface IJenkinsRunnerResult {
-  status: 'ok' | 'executable' | 'canceled' | 'timeout' | 'fail' | 'unkown',
+  status: 'ok' | 'executable' | 'canceled' | 'timeout' | 'fail' | 'unknown',
   stage: 'triggerBuild' | 'buildQueue' | 'build',
   isStageSuccess: boolean,
   error?: Error,

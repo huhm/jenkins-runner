@@ -2,12 +2,12 @@ const { jenkinsConfig } = require("./local.private.config.js");
 module.exports = {
   jenkinsConfig: {
     ...jenkinsConfig,
-
     host: "xx.xx.xx.xx:port", // 域名或IP
     schema: "http", // jenkins service schema
   },
   dingtalkList: [
     {
+      label: "xx群", //-标记用，可不填
       accessToken:
         "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
       secret:

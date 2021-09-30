@@ -89,7 +89,7 @@ export default class JenkinsJobClient {
   async waitOnQueueSafe(queueNum: number, options?: IJenkinsRunnerCheckOption) {
     let result: IJenkinsRunnerResult = {
       stage: 'buildQueue',
-      status: 'unkown',
+      status: 'unknown',
       queueNum,
       isStageSuccess: false
     }
@@ -165,7 +165,7 @@ export default class JenkinsJobClient {
     const that = this;
     const stageTag = '[Build]'
     const result: IJenkinsRunnerResult = {
-      status: 'unkown',
+      status: 'unknown',
       stage: 'build',
       buildNum,
       isStageSuccess: false
