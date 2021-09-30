@@ -6,9 +6,9 @@ jenkins 调用的cli和api, 使用了npm包`jenkins`的api
 
 ## cli
 
-使用步骤：
+### 首次使用步骤
 
-1. 安装和配置
+1. 安装和配置  
 
 ``` bash
 npm install -D jenkins-runner
@@ -23,16 +23,6 @@ npx jenkins-runner init
 5. 配置package.json中的scripts配置节 `"deploy:pn":"jenkins-runner -r deployPN"`
 6. 执行runner `npm run deploy:pn`
 
-local.private.config.js
-
-``` js
-export const jenkinsConfig = {
-  user: "<JenkinsUserName>",
-  password: "<JenkinsPassword>",
-};
-
-```
-
 ``` bash
 
 # 执行第一个runenrSchema
@@ -45,6 +35,19 @@ npx jenkins-runner -r runnerName
 npx jenkins-runner -r runnerName -c ./xxx.config.js
 
 # 在package.json 文件的scripts中增加 deploy:""
+```
+
+### 重新下仓库时的配置
+
+1. 执行`npx jenkins-runner init`
+local.private.config.js
+
+``` js
+export const jenkinsConfig = {
+  user: "<JenkinsUserName>",
+  password: "<JenkinsPassword>",
+};
+
 ```
 
 ## 钉钉群消息助手

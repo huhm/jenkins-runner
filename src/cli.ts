@@ -61,50 +61,39 @@ commander.program.command('init')
   .action((options) => {
     const { dir = './' } = options
     const configsPath = path.join(process.cwd(), dir)
-    const destFilePath = path.join(configsPath, DEFAULT_JENKINS_CONFIG_FILENAME);
     if (!fs.existsSync(configsPath)) {
       fs.mkdirSync(configsPath, { recursive: true })
     }
-    if (tryAddConfigFile(destFilePath)) {
-      console.log(chalk.green('[init] ok'), `config file has been created: ${destFilePath}`)
-      const privateConfigDestPath = path.join(configsPath, PRIVATE_CONFIG_FILENAME)
-      tryAddPrivateConfigFile(privateConfigDestPath);
-      tryAddConfigFilesToIgnorePath(PRIVATE_CONFIG_FILENAME)
-    } else {
-      console.error(chalk.red("[init] fail"), `File has existed: ${destFilePath}`)
-    }
 
-    function tryAddConfigFile(destFilePath: string) {
+    tryAddConfigFile();
+    tryAddPrivateConfigFile();
+    tryAddConfigFilesToIgnorePath(PRIVATE_CONFIG_FILENAME)
+
+
+    function tryAddConfigFile() {
+      const templateFilePath = path.join(__dirname, `../template/template-config.js`)
+      return tryAddTemplateFile(configsPath, DEFAULT_JENKINS_CONFIG_FILENAME, templateFilePath)
+    }
+    function tryAddPrivateConfigFile() {
+      const templateFilePath = path.join(__dirname, `../template/template-private.js`)
+      return tryAddTemplateFile(configsPath, PRIVATE_CONFIG_FILENAME, templateFilePath);
+    }
+    function tryAddTemplateFile(configsPath: string, fileName: string, templateFilePath: string) {
+      const destFilePath = path.join(configsPath, fileName);
+
       if (fs.existsSync(destFilePath)) {
+        console.error(chalk.blue("[init] add file ignore"), `${PRIVATE_CONFIG_FILENAME} has existed: ${destFilePath}`)
         return false;
       }
-      const srcFilePath = path.join(__dirname, `../template/template-config.js`)
-      const str = fs.readFileSync(srcFilePath, {
+      const str = fs.readFileSync(templateFilePath, {
         encoding: 'utf-8'
       })
       fs.writeFileSync(destFilePath, str, {
         encoding: 'utf-8'
       })
+      console.log(chalk.green('[init] add file ok'), `${PRIVATE_CONFIG_FILENAME} file has been created: ${destFilePath}`)
       return true;
     }
-
-    function tryAddPrivateConfigFile(destFilePath2: string) {
-      if (!fs.existsSync(destFilePath2)) {
-        const templatePath = path.join(__dirname, `../template/template-private.js`)
-        const str2 = fs.readFileSync(templatePath, {
-          encoding: 'utf-8'
-        })
-        fs.writeFileSync(destFilePath2, str2, {
-          encoding: 'utf-8'
-        })
-        console.log(chalk.green('[init] ok'), `${PRIVATE_CONFIG_FILENAME} has been created: ${destFilePath2}`)
-      } else {
-        console.log(chalk.blue('ignore'), `file has exist: ${destFilePath}`)
-      }
-    }
-
-
-
     function tryAddConfigFilesToIgnorePath(ignoreItem: string) {
       const gitIgnorePath = path.join(process.cwd(), '.gitignore');
       console.log(chalk.blue('Check gitignore'), `checking gitignore file`)
@@ -120,7 +109,6 @@ commander.program.command('init')
         } else {
           console.log(`ignore edit gitignore, has add ${ignoreItem}`)
         }
-
       } else {
         console.log(chalk.yellow('Notice'), `You'd better add the file '${ignoreItem}' to .gitignore file`)
       }
