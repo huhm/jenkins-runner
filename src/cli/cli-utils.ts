@@ -1,6 +1,7 @@
 
 import chalk from 'chalk';
 import commander from 'commander';
+import inquirer from 'inquirer';
 import path from 'path';
 import type { IJenkinsRunnerConfig } from '../interface';
 export const DEFAULT_JENKINS_CONFIG_FILENAME = `jenkins_runner.config.js`
@@ -45,4 +46,24 @@ export function loadJenkinsJson(config: string, _showHint = true) {
 export function addConfigOptionToCommand(cmd: commander.Command) {
   cmd.requiredOption('-c, --config <configPath>', 'config js path,you can use init to creat default config', DEFAULT_JENKINS_CONFIG_FILENAME)
   return cmd
+}
+
+export function addYOptionToCommand(cmd: commander.Command) {
+  cmd.option('-y, --yes', 'say yes to all inquire')
+  return cmd
+}
+
+export function getConfirmPromise(msg: string) {
+  let confirmQ = [
+    {
+      type: 'confirm',
+      name: 'isConfirmStart',
+      message: msg,
+      default: false,
+    },
+  ]
+
+  return inquirer.prompt(confirmQ).then((answers) => {
+    return answers.isConfirmStart as boolean
+  })
 }

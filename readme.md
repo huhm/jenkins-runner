@@ -6,9 +6,9 @@ jenkins 调用的cli和api, 使用了npm包`jenkins`的api
 
 ## cli
 + `jenkins-runner init [-d <configFolderPath>]` 初始化项目配置
-+ `jenkins-runner run <runnerName> [-c <configFile>]` 执行jenkins任务
++ `jenkins-runner run <runnerName> [-c <configFile> --yes]` 执行jenkins任务
 + `jenkins-runner info [-c <configFile>]` 尝试连接jenkins,并获取信息
-+ `jenkins-runner ding -t <text> [-c <configFile>]` 指定发送消息
++ `jenkins-runner ding -t <text> [-c <configFile> --yes]` 指定发送消息
 
 ### 首次使用步骤
 
@@ -53,6 +53,9 @@ npx jenkins-runner run <runnerName>
 
 # 指定配置文件
 npx jenkins-runner run  <runnerName> -c ./xxx.config.js
+
+# 忽略确认消息
+npx jenkins-runner run  <runnerName>  -y
 
 ```
 
