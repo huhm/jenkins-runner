@@ -25,11 +25,11 @@ export default function registerInit() {
 
 
       function tryAddConfigFile() {
-        const templateFilePath = path.join(__dirname, `../template/template-config.js`)
+        const templateFilePath = path.join(__dirname, `../../template/template-config.js`)
         return tryAddTemplateFile(configsPath, DEFAULT_JENKINS_CONFIG_FILENAME, templateFilePath)
       }
       function tryAddPrivateConfigFile() {
-        const templateFilePath = path.join(__dirname, `../template/template-private.js`)
+        const templateFilePath = path.join(__dirname, `../../template/template-private.js`)
         return tryAddTemplateFile(configsPath, PRIVATE_CONFIG_FILENAME, templateFilePath);
       }
       function tryAddTemplateFile(configsPath: string, fileName: string, templateFilePath: string) {
