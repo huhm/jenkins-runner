@@ -61,6 +61,10 @@ export default abstract class DingtalkMessage {
     }
     return this
   }
+
+  get content() {
+    return this.contentLines.join('\n')
+  }
   /**
    * 设置内容，在原内容基础上加
    * @param text 

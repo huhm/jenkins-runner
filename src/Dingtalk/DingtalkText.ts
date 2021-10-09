@@ -16,7 +16,7 @@ export default class DingtalkText extends DingtalkMessage {
     return this.render({
       [this.msgtype]: {
         title: this.title,
-        content: this.contentLines.join('\n'),
+        content: this.content,
       }
     })
   }

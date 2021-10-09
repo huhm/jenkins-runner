@@ -62,7 +62,7 @@ export default class DingtalkActionCard extends DingtalkMessage {
     return this.render({
       [this.msgtype]: {
         title: this.title,
-        text: this.contentLines.join('\n'),
+        text: this.content,
         btnOrientation: this.btnOrientation + '',
 
         singleTitle: this.singleTitle,

@@ -1,6 +1,6 @@
 {
   "name": "jenkins-runner",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "a simple jenkins runner cli and apis",
   "main": "lib/index.js",
   "bin": {
@@ -13,7 +13,8 @@
     "dev:example": "tsc && node example/jenkins_job_caller.js",
     "dev:run": "tsc && node ./bin/jenkins-runner run deployPN --config ./local/jenkins_runner.config.js",
     "dev:help": "tsc && node ./bin/jenkins-runner run -h",
-    "dev:ding": "tsc && node ./bin/jenkins-runner ding  --config ./local/jenkins_runner.config.js -t \"Test jenkins-runner ding 前端发布\"",
+    "dev:helpding": "tsc && node ./bin/jenkins-runner ding -h",
+    "dev:ding": "tsc && node ./bin/jenkins-runner ding  --config ./local/jenkins_runner.config.js -t \"Test jenkins-runner ding 测试 [baidu](https://www.baidu.com)\"  -p ./local/dingtalkMsg.md",
     "dev:init": "tsc && node ./bin/jenkins-runner init --dir local",
     "dev:info": "tsc && node ./bin/jenkins-runner info --config ./local/jenkins_runner.config.js"
   },
@@ -43,6 +44,12 @@
     "@types/commander": "^2.12.2",
     "@types/crypto-js": "^4.0.2",
     "@types/jenkins": "^0.23.2",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "cz-conventional-changelog": "^3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

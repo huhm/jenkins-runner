@@ -3,12 +3,15 @@
 [![npm version](https://badge.fury.io/js/jenkins-runner.svg)](https://badge.fury.io/js/jenkins-runner)
 
 jenkins 调用的cli和api, 使用了npm包`jenkins`的api
+也可作为快速接入钉钉机器人的cli
 
 ## cli
 + `jenkins-runner init [-d <configFolderPath>]` 初始化项目配置
 + `jenkins-runner run <runnerName> [-c <configFile> --yes]` 执行jenkins任务
 + `jenkins-runner info [-c <configFile>]` 尝试连接jenkins,并获取信息
-+ `jenkins-runner ding -t <text> [-c <configFile> --yes]` 指定发送消息
+
+jenkins 发送钉钉消息
++ `jenkins-runner ding -t <text> [-c <configFile> --yes]` 指定发送消息(默认markdown格式，可指定格式，可指定消息内容的文件地址)
 
 ### 首次使用步骤
 
@@ -61,8 +64,17 @@ npx jenkins-runner run  <runnerName>  -y
 
 send text
 ``` bash
+# 查看用法
+npx jenkins-runner ding -h
 
-npx jenkins-runner ding -t "fff"
+# 简单的消息发送，默认markdown格式
+npx jenkins-runner ding -t "Something happens [change](http://xxx.zzz)"
+
+# 发送文件消息
+npx jenkins-runner ding -t "将在文件消息前面" -p "./xxx.md"
+
+# 指定格式
+npx jenkins-runner ding -f link  -t "将在文件消息前面" --title "Link 标题" --picUrl "https://gw.alicdn.com/tfs/TB1ut3xxbsrBKNjSZFpXXcXhFXa-846-786.png" --messageUrl "https://developers.dingtalk.com/document/robots/custom-robot-access?spm=ding_open_doc.document.0.0.62846573S3KCDL#topic-2026027"
 ```
 
 ## 钉钉群消息助手
