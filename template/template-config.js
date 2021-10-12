@@ -19,6 +19,7 @@ module.exports = {
     {
       runnerDisplayName: "<ProjectName>-PN",
       runnerName: "deployPN",
+      onlyRemindOk: false, // default value
       jobList: [
         {
           jobName: "<JobName1>",

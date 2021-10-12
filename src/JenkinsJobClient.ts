@@ -191,8 +191,8 @@ export default class JenkinsJobClient {
       }
       let isContinue = true;
       if (!result.job.building) {
-        result.status = 'ok';
-        result.isStageSuccess = true;
+        result.status = result.job.result === 'SUCCESS' ? 'ok' : (result.job.result === 'ABORTED' ? 'canceled' : 'fail');
+        result.isStageSuccess = result.status === 'ok';
         isContinue = false;
       }
       if (isContinue && this._checkIsTimeout(result.job.estimatedDuration, ctxData)) {
@@ -203,7 +203,7 @@ export default class JenkinsJobClient {
       if (!isContinue) {
         const logList = [result.job.fullDisplayName || '-', 'duration', result.job.duration + 'ms', 'Details:', chalk.underline.blue(result.job.url)]
 
-        const chalkFun = result.job.result === 'SUCCESS' ? chalk.green : chalk.yellow
+        const chalkFun = result.isStageSuccess ? chalk.green : chalk.yellow
         this.log([chalkFun(`${stageTag}-${result.status}`), ...logList])
         return result;
       }
@@ -214,7 +214,7 @@ export default class JenkinsJobClient {
   private _checkIsTimeout(estimatedDuration: number | undefined, ctxOptions: IStageCtxData) {
     const { stageTag, startTime, lastLogTime, logBrifInterval, timeout } = ctxOptions;
     const dtNow = new Date().getTime()
-    const waitLog = [chalk.grey(`${stageTag}-waiting on...`), 'estimatedDuration', estimatedDuration + 'ms', 'waited:', (dtNow - startTime) + 'ms'];
+    const waitLog = [chalk.grey(`${stageTag}-waiting on...`), 'estimatedDuration', (estimatedDuration || '--') + 'ms', 'waited:', (dtNow - startTime) + 'ms'];
     if (dtNow - lastLogTime > logBrifInterval) {
       this.log(waitLog)
       ctxOptions.lastLogTime = dtNow

@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import commander from 'commander';
 import fs from 'fs';
 import path from 'path';
-import { DEFAULT_JENKINS_CONFIG_FILENAME } from './cli-utils';
+import { DEFAULT_JENKINS_CONFIG_FILENAME } from './cli_utils';
 const PRIVATE_CONFIG_FILENAME = 'local.private.config.js'
 
 // init config file

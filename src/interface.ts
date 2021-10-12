@@ -110,7 +110,7 @@ export interface IJenkinsJobResult {
   /**
    * 可能还有其他值，未完成时为null
    */
-  result: 'SUCCESS' | 'FAILED' | null;
+  result: 'SUCCESS' | 'FAILURE' | 'ABORTED' | null;
 
   _class?: string,
   actions?: [],

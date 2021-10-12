@@ -4,7 +4,7 @@ import fs from 'fs';
 import { DingTalkRobots, DingtalkText } from '..';
 import DingtalkLink from '../Dingtalk/DingtalkLink';
 import DingtalkMarkdown from '../Dingtalk/DingtalkMarkdown';
-import { addConfigOptionToCommand, addYOptionToCommand, getConfirmPromise, loadJenkinsJson } from './cli-utils';
+import { addConfigOptionToCommand, addYOptionToCommand, getConfirmPromise, loadJenkinsJson } from './cli_utils';
 
 function createMsgByFormat(format: string) {
   switch (format) {

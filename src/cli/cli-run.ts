@@ -3,7 +3,7 @@
 import chalk from 'chalk';
 import commander from 'commander';
 import JenkinsClient from '../JenkinsClient';
-import { addConfigOptionToCommand, addYOptionToCommand, getConfirmPromise, loadJenkinsJson } from './cli-utils';
+import { addConfigOptionToCommand, addYOptionToCommand, getConfirmPromise, loadJenkinsJson } from './cli_utils';
 
 
 

@@ -18,5 +18,5 @@ registerInfo();
 registerDing()
 commander.program.parse(process.argv);
 
-export { DEFAULT_JENKINS_CONFIG_FILENAME } from './cli-utils';
+export { DEFAULT_JENKINS_CONFIG_FILENAME } from './cli_utils';
 

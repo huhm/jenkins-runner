@@ -1,7 +1,7 @@
 
 import commander from 'commander';
 import JenkinsClient from '..';
-import { addConfigOptionToCommand, loadJenkinsJson } from './cli-utils';
+import { addConfigOptionToCommand, loadJenkinsJson } from './cli_utils';
 
 export function runInfo(options: { config: string }) {
   const { config } = options;
