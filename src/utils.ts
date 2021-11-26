@@ -23,3 +23,15 @@ export function convertCheckOption(options?: IJenkinsRunnerCheckOption) {
 export function padStartNum(num: number, length: number = 2) {
   return num.toString().padStart(length)
 }
+export function humanizeDuration(ms: number) {
+  if (ms < 1000) {
+    return ms + 'ms';
+  }
+  const second = Math.floor(ms / 1000);
+
+  if (second < 180) {
+    return second + 's';
+  }
+  const minute = second / 60;
+  return minute.toFixed(1) + 'min'
+}

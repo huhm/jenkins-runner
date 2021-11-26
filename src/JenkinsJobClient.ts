@@ -2,7 +2,7 @@ import chalk from "chalk";
 import { DingtalkMarkdown } from ".";
 import { IJenkinsJobResult, IJenkinsQueueItemResult, IJenkinsRunnerCheckOption, IJenkinsRunnerResult } from "./interface";
 import JenkinsClient from "./JenkinsClient";
-import { convertCheckOption, formatSimpleDate } from "./utils";
+import { convertCheckOption, formatSimpleDate, humanizeDuration } from "./utils";
 
 
 const STAGE_LABEL_MAP = {
@@ -214,7 +214,7 @@ export default class JenkinsJobClient {
   private _checkIsTimeout(estimatedDuration: number | undefined, ctxOptions: IStageCtxData) {
     const { stageTag, startTime, lastLogTime, logBrifInterval, timeout } = ctxOptions;
     const dtNow = new Date().getTime()
-    const waitLog = [chalk.grey(`${stageTag}-waiting on...`), 'estimatedDuration', (estimatedDuration || '--') + 'ms', 'waited:', (dtNow - startTime) + 'ms'];
+    const waitLog = [chalk.grey(`${stageTag}-waiting on...`), 'waited:', humanizeDuration(dtNow - startTime) + 'ms', 'estimated:', (estimatedDuration ? humanizeDuration(estimatedDuration) : '--') + 'ms'];
     if (dtNow - lastLogTime > logBrifInterval) {
       this.log(waitLog)
       ctxOptions.lastLogTime = dtNow
@@ -349,6 +349,7 @@ export default class JenkinsJobClient {
     this._prependJobInfoForLog(briefArgs, detailArgs)
     this.jkClient.warn(briefArgs, detailArgs)
   }
+
   log(briefArgs: any[] | null, detailArgs?: any[]) {
     this._prependJobInfoForLog(briefArgs, detailArgs)
     this.jkClient.log(briefArgs, detailArgs)
