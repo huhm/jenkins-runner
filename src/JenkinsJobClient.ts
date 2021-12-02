@@ -214,7 +214,7 @@ export default class JenkinsJobClient {
   private _checkIsTimeout(estimatedDuration: number | undefined, ctxOptions: IStageCtxData) {
     const { stageTag, startTime, lastLogTime, logBrifInterval, timeout } = ctxOptions;
     const dtNow = new Date().getTime()
-    const waitLog = [chalk.grey(`${stageTag}-waiting on...`), 'waited:', humanizeDuration(dtNow - startTime) + 'ms', 'estimated:', (estimatedDuration ? humanizeDuration(estimatedDuration) : '--') + 'ms'];
+    const waitLog = [chalk.grey(`${stageTag}-waiting on...`), 'waited:', humanizeDuration(dtNow - startTime), 'estimated:', (estimatedDuration ? humanizeDuration(estimatedDuration) : '--')];
     if (dtNow - lastLogTime > logBrifInterval) {
       this.log(waitLog)
       ctxOptions.lastLogTime = dtNow
