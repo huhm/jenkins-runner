@@ -31,6 +31,10 @@ export interface IJenkinsRunnerConfig {
    */
   dingtalkList: IDingtalkConfigItem[],
 
+  /**
+   * 拼装消息的时候对git更新记录的筛选规则
+   */
+  gitLogConfig?: IGitLogConfig;
 
   runnerSchemas: IRunnerSchema[]
 
@@ -99,11 +103,29 @@ export interface IJenkinsRunnerCheckOption {
   //#endregion
 }
 
+export interface IGitLogConfig {
+  /**
+     * 是否忽略gitlog的author
+     */
+  ignoreAuthor?: boolean;
 
+  /**
+   * 需要忽略的gitTag
+   * e.g: ['chore','doc']
+   */
+  ignoreTag?: string[];
+
+  /**
+   * 包含的tags,如果没有，则全部包含
+   */
+  includeTags?: string[];
+}
 export interface IRunnerJobItem extends IJenkinsRunnerCheckOption {
   jobName: string,
   jobDisplayName?: string,
   parameters: Record<string, string>;
+
+  gitLogConfig?: IGitLogConfig;
 }
 
 export interface IJenkinsJobResult {

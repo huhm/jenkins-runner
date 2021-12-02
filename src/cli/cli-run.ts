@@ -25,7 +25,7 @@ export async function runJob(options: { config: string, runnerName: string, yes?
       return true;
     }
   }
-  const result = await client.runSchema(runnerSchema, json.dingtalkList)
+  const result = await client.runSchema(runnerSchema, json.dingtalkList, json.gitLogConfig)
   return result;
 }
 

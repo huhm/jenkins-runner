@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import { DingtalkMarkdown } from ".";
-import { IJenkinsJobResult, IJenkinsQueueItemResult, IJenkinsRunnerCheckOption, IJenkinsRunnerResult } from "./interface";
+import { IGitLogConfig, IJenkinsJobResult, IJenkinsQueueItemResult, IJenkinsRunnerCheckOption, IJenkinsRunnerResult } from './interface';
 import JenkinsClient from "./JenkinsClient";
 import { convertCheckOption, formatSimpleDate, humanizeDuration } from "./utils";
 
@@ -256,7 +256,7 @@ export default class JenkinsJobClient {
       //   jobRunMetas.push(`StartAt: ${formatSimpleDate(job.timestamp)}`)
       // }
       if (job.duration) {
-        jobRunMetas.push(`Elapsed: ${job.duration}ms`)
+        jobRunMetas.push(`Elapsed: ${humanizeDuration(job.duration)}`)
       }
       if (job.url) {
         jobRunMetas.push(`[Job-${jobResult.buildNum}](${job.url})`)
@@ -278,8 +278,13 @@ export default class JenkinsJobClient {
       }
     }
   }
-  async appendJobMarkdownGitChanges(job: IJenkinsJobResult, md: DingtalkMarkdown, options?: { title?: string }) {
-    const { title = "Changes" } = options || {};
+  async appendJobMarkdownGitChanges(job: IJenkinsJobResult, md: DingtalkMarkdown, options?: {
+    title?: string,
+    gitLogConfig?: IGitLogConfig
+  }) {
+
+    const { title = "Changes", gitLogConfig = {} } = options || {};
+    const { ignoreAuthor, ignoreTag = [], includeTags = [] } = gitLogConfig
     const changeSetItems = job.changeSet?.items || [];
     if (changeSetItems.length !== 0) {
       md.append("");
@@ -295,13 +300,28 @@ export default class JenkinsJobClient {
         if (item.timestamp < minDt) {
           minDt = item.timestamp
         }
+        if (ignoreTag.length > 0 || includeTags.length > 0) {
+          const tag = (item.msg || '').split(':')[0] || '';
+          if (ignoreTag.length > 0) {
+            if (ignoreTag.indexOf(tag) >= 0) {
+              return;
+            }
+          }
+          if (includeTags.length > 0) {
+            if (includeTags.indexOf(tag) < 0) {
+              return;// 忽略
+            }
+          }
+        }
+        let authorInfo = ignoreAuthor ? '' : ` by ${item.author.fullName}`
         md.append(
-          `- ${item.msg} by ${item.author.fullName}`
+          `- ${item.msg}${authorInfo}`
         );
       });
 
       md.append(``);
-      md.append(`> ChangesAt: ${formatSimpleDate(minDt)}${minDt === maxDt ? '' : '-' + formatSimpleDate(maxDt)} Commits:${changeSetItems.length}`);
+      md.append(`> ChangesAt: ${formatSimpleDate(minDt)}${minDt === maxDt ? '' : ' ~ ' + formatSimpleDate(maxDt)}`);
+      md.append(`> Commits:${changeSetItems.length}`)
     } else {
       md.append("");
       md.append("No Changes");
@@ -310,6 +330,7 @@ export default class JenkinsJobClient {
 
   async createJobMarkdown(jobResult: IJenkinsRunnerResult, md: DingtalkMarkdown | undefined, config?: {
     title?: string
+    gitLogConfig?: IGitLogConfig
   }) {
     if (!md) {
       md = new DingtalkMarkdown();
@@ -321,7 +342,9 @@ export default class JenkinsJobClient {
     this.appendJobMarkdownMetas(jobResult, md);
     if (job) {
       if (job.changeSet?.kind === 'git') {
-        this.appendJobMarkdownGitChanges(job, md)
+        this.appendJobMarkdownGitChanges(job, md, {
+          gitLogConfig: config?.gitLogConfig
+        })
       }
     }
     md.setTitle(title)

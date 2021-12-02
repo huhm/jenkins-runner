@@ -3,8 +3,8 @@ import createJenkinsApi from "jenkins";
 import { JenkinsJobClient } from '.';
 import DingtalkMarkdown from './Dingtalk/DingtalkMarkdown';
 import DingTalkRobots from './Dingtalk/DingtalkRobots';
-import { IDingtalkConfigItem, IJenkinsConConfig, IJenkinsRunnerConfig, IRunnerJobItem, IRunnerSchema } from './interface';
-import { formatSimpleDate } from './utils';
+import { IDingtalkConfigItem, IGitLogConfig, IJenkinsConConfig, IJenkinsRunnerConfig, IRunnerJobItem, IRunnerSchema } from './interface';
+import { formatSimpleDate, humanizeDuration } from './utils';
 
 export enum JenkinsLogLevel {
   None = 0,
@@ -114,7 +114,7 @@ export default class JenkinsClient {
     return null;
   }
 
-  async runSchema(runnerSchema: IRunnerSchema | undefined, dingtalkList: IDingtalkConfigItem[]) {
+  async runSchema(runnerSchema: IRunnerSchema | undefined, dingtalkList: IDingtalkConfigItem[], gitLogConfig?: IGitLogConfig) {
     if (!runnerSchema) {
       return;
     }
@@ -136,7 +136,8 @@ export default class JenkinsClient {
       });
 
       jobClient.createJobMarkdown(jobResult, md, {
-        title: `(${jobIdxLabel}) ${jobItem.jobDisplayName || jobItem.jobName}`
+        title: `(${jobIdxLabel}) ${jobItem.jobDisplayName || jobItem.jobName}`,
+        gitLogConfig: jobItem.gitLogConfig || gitLogConfig
       })
       if (jobResult.isStageSuccess) {
         this.log([chalk.green('[JobRunner-OK]'), jobIdxLabel, jobItem.jobName])
@@ -164,7 +165,7 @@ export default class JenkinsClient {
     if (runnerSchema.jobList.length > 1) {
       md.append("### Summary");
       md.append("");
-      md.append(`> StartAt:${formatSimpleDate(startDt)} Elapsed:${new Date().getTime() - startDt}ms`);
+      md.append(`> StartAt:${formatSimpleDate(startDt)} Elapsed:${humanizeDuration(new Date().getTime() - startDt)}ms`);
       md.append("");
       md.append(`> Status:${okCount}/${runnerSchema.jobList.length} - ${isFail ? "Fail" : 'OK'}`);
     }
