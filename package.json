@@ -9,7 +9,7 @@
   "homepage": "https://github.com/huhm/jenkins-runner",
   "scripts": {
     "build": "tsc",
-    "release": "tsc && npm publish",
+    "publish:patch": "tsc && npm version patch && npm publish",
     "dev:example": "tsc && node example/jenkins_job_caller.js",
     "dev:run": "tsc && node ./bin/jenkins-runner run deployPN --config ./local/jenkins_runner.config.js",
     "dev:help": "tsc && node ./bin/jenkins-runner run -h",
