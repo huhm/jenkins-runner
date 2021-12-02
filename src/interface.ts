@@ -113,7 +113,7 @@ export interface IGitLogConfig {
    * 需要忽略的gitTag
    * e.g: ['chore','doc']
    */
-  ignoreTag?: string[];
+  ignoreTags?: string[];
 
   /**
    * 包含的tags,如果没有，则全部包含

@@ -284,7 +284,7 @@ export default class JenkinsJobClient {
   }) {
 
     const { title = "Changes", gitLogConfig = {} } = options || {};
-    const { ignoreAuthor, ignoreTag = [], includeTags = [] } = gitLogConfig
+    const { ignoreAuthor, ignoreTags = [], includeTags = [] } = gitLogConfig
     const changeSetItems = job.changeSet?.items || [];
     if (changeSetItems.length !== 0) {
       md.append("");
@@ -300,10 +300,10 @@ export default class JenkinsJobClient {
         if (item.timestamp < minDt) {
           minDt = item.timestamp
         }
-        if (ignoreTag.length > 0 || includeTags.length > 0) {
+        if (ignoreTags.length > 0 || includeTags.length > 0) {
           const tag = (item.msg || '').split(':')[0] || '';
-          if (ignoreTag.length > 0) {
-            if (ignoreTag.indexOf(tag) >= 0) {
+          if (ignoreTags.length > 0) {
+            if (ignoreTags.indexOf(tag) >= 0) {
               return;
             }
           }

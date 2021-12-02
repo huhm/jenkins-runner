@@ -15,9 +15,15 @@ module.exports = {
     },
   ],
   gitLogConfig: {
-    ignoreAuthor: false, // 默认包含
-    ignoreTag: [], // 默认不过滤
-    includeTags: [], // 默认不过滤
+    // 默认包含作者信息
+    ignoreAuthor: false,
+
+    // 需要过滤的tag,默认不过滤
+    // tag为commit信息`:`前的部分
+    ignoreTags: [],
+    // 仅显示（includeTags-ignoreTags）的提交信息，默认全部显示
+    // e.g: ['feat','fix','build','revert','perf']
+    includeTags: [],
   },
   // 默认执行列表中第一个，可指定runnerName
   runnerSchemas: [
