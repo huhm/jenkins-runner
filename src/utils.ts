@@ -27,11 +27,11 @@ export function humanizeDuration(ms: number) {
   if (ms < 1000) {
     return ms + 'ms';
   }
-  const second = Math.floor(ms / 1000);
+  const second = Math.round(ms / 1000);
 
   if (second < 180) {
     return second + 's';
   }
-  const minute = second / 60;
-  return minute.toFixed(1) + 'min'
+  const minute = Math.round(second / 60);
+  return minute + 'min'
 }

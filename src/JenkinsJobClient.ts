@@ -321,7 +321,7 @@ export default class JenkinsJobClient {
 
       md.append(``);
       md.append(`> ChangesAt: ${formatSimpleDate(minDt)}${minDt === maxDt ? '' : ' ~ ' + formatSimpleDate(maxDt)}`);
-      md.append(`> Commits:${changeSetItems.length}`)
+      md.append(`> Commits: ${changeSetItems.length}`)
     } else {
       md.append("");
       md.append("No Changes");
