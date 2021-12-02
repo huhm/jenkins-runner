@@ -14,6 +14,11 @@ module.exports = {
         "SECxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     },
   ],
+  gitLogConfig: {
+    ignoreAuthor: false, // 默认包含
+    ignoreTag: [], // 默认不过滤
+    includeTags: [], // 默认不过滤
+  },
   // 默认执行列表中第一个，可指定runnerName
   runnerSchemas: [
     {
