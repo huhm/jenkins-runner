@@ -301,7 +301,7 @@ export default class JenkinsJobClient {
           minDt = item.timestamp
         }
         if (ignoreTags.length > 0 || includeTags.length > 0) {
-          const tag = (item.msg || '').split(':')[0] || '';
+          const tag = (item.msg || '').trimStart().split(':')[0].split('(')[0];//feat(xxx): xxx
           if (ignoreTags.length > 0) {
             if (ignoreTags.indexOf(tag) >= 0) {
               return;
