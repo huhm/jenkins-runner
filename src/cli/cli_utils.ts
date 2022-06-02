@@ -67,3 +67,19 @@ export function getConfirmPromise(msg: string) {
     return answers.isConfirmStart as boolean
   })
 }
+
+
+export function getInputPromise(msg:string,initialValue?:string){
+  let questions = [
+    {
+      type: 'input',
+      name: 'str',
+      message: msg,
+      default: initialValue,
+    },
+  ]
+
+  return inquirer.prompt(questions).then((answers) => {
+    return answers.str as string
+  })
+}

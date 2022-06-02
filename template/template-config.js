@@ -1,4 +1,13 @@
-const { jenkinsConfig } = require("./local.private.config.js");
+// const { jenkinsConfig } = require("../local.private.config.js");
+let jenkinsConfig={
+  user:process.env.J_RUNNER_USER,
+  password:process.env.J_RUNNER_PWD,
+  apiToken:process.env.J_RUNNER_APITOKEN
+}
+if(!jenkinsConfig.user){
+  jenkinsConfig=require('../local.private.config.js').jenkinsConfig
+}
+
 module.exports = {
   jenkinsConfig: {
     ...jenkinsConfig,

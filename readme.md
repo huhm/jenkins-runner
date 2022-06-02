@@ -19,7 +19,7 @@ jenkins 发送钉钉消息
 2. 配置 `npx jenkins-runner init`
 3. 配置生成的文件
    1. config文件： `jenkins_runner.config.js`
-   2. 配置生成的私有文件 `local.private.config.js`
+   2. 配置环境变量/生成的私有文件 `local.private.config.js`
 4. 检查jenkins账号配置 `npx jenkins-runner info`
 5. 配置package.json
    1. scripts配置节 `"deploy:pn":"jenkins-runner run deployPN"`
