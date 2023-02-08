@@ -1,11 +1,14 @@
-// const { jenkinsConfig } = require("../local.private.config.js");
-let jenkinsConfig={
-  user:process.env.J_RUNNER_USER,
-  password:process.env.J_RUNNER_PWD,
-  apiToken:process.env.J_RUNNER_APITOKEN
-}
-if(!jenkinsConfig.user){
-  jenkinsConfig=require('../local.private.config.js').jenkinsConfig
+const { tryLoadConfigFile } = require("jenkins-runner");
+let jenkinsConfig = {
+  user: process.env.J_RUNNER_USER,
+  password: process.env.J_RUNNER_PWD,
+  apiToken: process.env.J_RUNNER_APITOKEN,
+};
+if (!jenkinsConfig.user) {
+  jenkinsConfig = tryLoadConfigFile(
+    "local.private.config.js",
+    "../"
+  ).jenkinsConfig;
 }
 
 module.exports = {

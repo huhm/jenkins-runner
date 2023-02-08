@@ -179,7 +179,8 @@ export default class JenkinsJobClient {
         result.job = await this.getBuild(buildNum);
       } catch (ex) {
         getErrCount++;
-        this.error([chalk.red(`${stageTag}-GetError`), (ex as any)?.message], [ex]);
+        const errMsg = (ex as any)?.message
+        this.error([chalk.red(`${stageTag}-GetError`), errMsg], [ex]);
         if (getErrCount > 10) {
           result.status = 'fail';
           result.error = ex as Error;
